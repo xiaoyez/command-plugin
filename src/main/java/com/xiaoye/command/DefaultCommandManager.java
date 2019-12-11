@@ -23,15 +23,19 @@ public class DefaultCommandManager implements CommandManager {
         else
         {
             commandNames.remove(0);
-            for (String name : commandNames)
+            String[] params = null;
+            for (int i = 0; i < commandNames.size(); i++)
             {
+                String name = commandNames.get(i);
                 Command<T,S,R> childCommand = command.getChildCommand(name);
                 if (childCommand == null)
-                    throw new CommandNotFoundException("命令["+command.getName()+"]下不存在子命令["+childCommand.getName()+"]");
+                {
+                    params = Arrays.copyOfRange(commandNames.toArray(new String[0]),i,commandNames.size());
+                }
                 else
                     command = childCommand;
             }
-            R result = command.getOperation().operate(target, null, sender);
+            R result = command.getOperation().operate(target, params, sender);
 
             Map<String, List<String>> parameters = commandStructure.getParameters();
             Set<String> keySet = parameters.keySet();
