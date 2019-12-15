@@ -1,4 +1,4 @@
-package com.xiaoye.command;
+package com.xiaoye.command.core;
 
 /**
  * 命令对应要执行的操作类

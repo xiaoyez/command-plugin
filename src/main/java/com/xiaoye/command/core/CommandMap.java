@@ -1,4 +1,4 @@
-package com.xiaoye.command;
+package com.xiaoye.command.core;
 
 import lombok.Getter;
 import lombok.Setter;

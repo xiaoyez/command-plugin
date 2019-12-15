@@ -1,11 +1,9 @@
-package com.xiaoye.command;
+package com.xiaoye.command.core;
 
 import lombok.*;
 
-import java.lang.annotation.Target;
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,13 +23,15 @@ public class Command<T,S,R> {
 
     protected CommandMap childCommands = null;
 
-    protected T target;
-
-    protected parameterMap parameterMap = null;
+    protected ParameterMap parameterMap = null;
 
     protected Operation<T,S,R> operation;
 
-    private static class parameterMap
+    public Command copy() {
+        return new Command<T,S,R>(name,null,parameterMap,operation);
+    }
+
+    private static class ParameterMap
     {
         @Getter
         @Setter
@@ -49,9 +49,8 @@ public class Command<T,S,R> {
     }
 
 
-    public Command(String name, T target, Operation<T, S, R> operation) {
+    public Command(String name,  Operation<T, S, R> operation) {
         this.name = name;
-        this.target = target;
         this.operation = operation;
     }
 
@@ -75,7 +74,7 @@ public class Command<T,S,R> {
     public void registryParameter(Parameter parameter)
     {
         if (parameterMap == null)
-            parameterMap = new parameterMap();
+            parameterMap = new ParameterMap();
         parameterMap.registryParameter(parameter);
     }
 

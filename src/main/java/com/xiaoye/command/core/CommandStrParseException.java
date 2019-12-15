@@ -1,4 +1,4 @@
-package com.xiaoye.command;
+package com.xiaoye.command.core;
 
 public class CommandStrParseException extends RuntimeException {
     public CommandStrParseException() {

@@ -1,4 +1,4 @@
-package com.xiaoye.command;
+package com.xiaoye.command.core;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -62,6 +62,40 @@ public class DefaultCommandManager implements CommandManager {
         }
     }
 
+
+    @Override
+    public  Command<?,?,?> findCommand(String commandStr)
+    {
+        CommandStructure commandStructure = parseCommandStr(commandStr,null);
+
+        return findCommand(commandStructure);
+    }
+
+    private <T,S,R> Command<T,S,R> findCommand(CommandStructure commandStructure)
+    {
+        List<String> commandNames = commandStructure.commandNames;
+        String commandName = commandNames.get(0);
+        Command<T,S,R> command = commandMap.getCommand(commandName);
+        if (command == null)
+            throw new CommandNotFoundException("未找到该命令-->" + commandName) ;
+        else
+        {
+            commandNames.remove(0);
+            String[] params = null;
+            for (int i = 0; i < commandNames.size(); i++)
+            {
+                String name = commandNames.get(i);
+                Command<T, S, R> childCommand = command.getChildCommand(name);
+                if (childCommand == null)
+                {
+                    params = Arrays.copyOfRange(commandNames.toArray(new String[0]), i, commandNames.size());
+                }
+                else
+                    command = childCommand;
+            }
+        }
+        return command;
+    }
 
 
     /**
