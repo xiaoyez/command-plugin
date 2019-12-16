@@ -23,6 +23,6 @@ public class CommandDefinition {
 
     private String[] parameters;
 
-    private boolean isTopCommand = false;
+    private boolean isTopCommand = true;
 
 }

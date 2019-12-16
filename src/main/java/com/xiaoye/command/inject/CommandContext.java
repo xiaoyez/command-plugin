@@ -173,9 +173,12 @@ public class CommandContext {
 
             command.setOperation(operationManager.get(commandDefinition.getOperation()));
             String[] parameters = commandDefinition.getParameters();
-            for (String parameter : parameters)
+            if (parameters != null)
             {
-                command.registryParameter(parameterManager.get(parameter));
+                for (String parameter : parameters)
+                {
+                    command.registryParameter(parameterManager.get(parameter));
+                }
             }
             commandManagerForInject.registry(commandDefinition.getName(),command);
             if (commandDefinition.isTopCommand())
@@ -283,7 +286,7 @@ public class CommandContext {
         TopCommand topCommand = AnnotationUtil.getAnnotation(commandClass, TopCommand.class);
         if (topCommand != null)
         {
-            commandDefinition.setTopCommand(true);
+            commandDefinition.setTopCommand(false);
         }
         return commandDefinition;
     }

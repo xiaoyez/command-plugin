@@ -11,7 +11,8 @@ import java.util.Map;
  * @param <T> 操作对象类型
  * @param <S> 命令发送者类型
  */
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Command<T,S,R> {
@@ -63,12 +64,18 @@ public class Command<T,S,R> {
 
     public Command getChildCommand(String name)
     {
+        if(childCommands == null)
+            return null;
         return childCommands.getCommand(name);
     }
 
     public Collection<Command> getChildCommands()
     {
-        return childCommands.getCommandMap().values();
+        if (childCommands == null)
+            return null;
+        Map<String, Command> commandMap = childCommands.getCommandMap();
+
+        return commandMap == null? null: commandMap.values();
     }
 
     public void registryParameter(Parameter parameter)
@@ -80,12 +87,17 @@ public class Command<T,S,R> {
 
     public Parameter getParameter(String name)
     {
-        return parameterMap.getParameter(name);
+        return parameterMap == null?null:parameterMap.getParameter(name);
     }
 
     public Collection<Parameter> getParameters()
     {
-        return parameterMap.getParameterMap().values();
+        if (parameterMap == null)
+            return null;
+        Map<String, Parameter> parameterMap = this.parameterMap.getParameterMap();
+        if (parameterMap == null)
+            return null;
+        return parameterMap.values();
     }
 
 
