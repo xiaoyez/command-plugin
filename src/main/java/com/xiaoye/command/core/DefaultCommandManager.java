@@ -1,5 +1,6 @@
 package com.xiaoye.command.core;
 
+import com.xiaoye.util.StringUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,8 +12,8 @@ public class DefaultCommandManager implements CommandManager {
 
     protected CommandMap commandMap = new CommandMap();
 
-    @Override
-    public <T,S,R> R execute(String commandStr, S sender,T target) {
+
+    public <T,S,R> R executeCommandWithoutPipeSign(String commandStr, S sender,T target) {
 
         CommandStructure commandStructure = parseCommandStr(commandStr,sender);
         List<String> commandNames = commandStructure.commandNames;
@@ -62,6 +63,22 @@ public class DefaultCommandManager implements CommandManager {
         }
     }
 
+
+    @Override
+    public <T, S, R> R execute(String commandStr, S sender, T target)
+    {
+        if (StringUtil.hasText(commandStr))
+        {
+            String[] commands = commandStr.trim().split("\\|");
+            Object result = target;
+            for (String command : commands)
+            {
+                result = executeCommandWithoutPipeSign(command,sender,result);
+            }
+            return (R)result;
+        }
+        return null;
+    }
 
     @Override
     public  Command<?,?,?> findCommand(String commandStr)
