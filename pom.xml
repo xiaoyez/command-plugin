@@ -6,7 +6,16 @@
 
     <groupId>com.xiaoye</groupId>
     <artifactId>command-plugin</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
+
+    <distributionManagement>
+        <repository>
+            <id>command-plugin</id>
+            <name>releases</name>
+            <url>http://mvn2.qdingnet.com/command-plugin/content/repositories/releases</url>
+            <uniqueVersion>true</uniqueVersion>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
         <dependency>
@@ -21,6 +30,11 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>1.1.0.Final</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -34,6 +48,22 @@
                     <target>1.8</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
+            </plugin>
+            <!-- 要将源码放上去，需要加入这个插件 -->
+            <plugin>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
+                <configuration>
+                    <attach>true</attach>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
